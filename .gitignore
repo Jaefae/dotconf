@@ -1,0 +1,11 @@
+# XDG data/cache dirs (populated at runtime via nushell/env.nu)
+share/
+cache/
+
+# Nushell runtime artifacts (history, nested stray dir, misplaced git excludes)
+nushell/history.*
+nushell/nushell/
+nushell/git/
+
+# Claude Code local config
+.claude/

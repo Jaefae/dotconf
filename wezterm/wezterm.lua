@@ -1,10 +1,10 @@
 local wezterm = require("wezterm")
-
+-- Hello from dotconf
 local config = wezterm.config_builder()
 local tab_style = "square"
 
 config.font_size = 13
-config.color_scheme = 'One Dark (Gogh)'
+config.color_scheme = "One Dark (Gogh)"
 config.font = wezterm.font("0xProto Nerd Font")
 -- Disable IME to prevent Windows keystroke interception bugs
 config.line_height = 1.0
@@ -15,8 +15,8 @@ config.hide_tab_bar_if_only_one_tab = true
 config.tab_and_split_indices_are_zero_based = false
 config.window_decorations = "RESIZE"
 config.term = "xterm-256color"
-config.default_prog = { 'nu' }
-config.front_end = "OpenGL" -- If you were on WebGpu
+config.default_prog = { "nu" }
+config.front_end = "OpenGL"
 
 config.animation_fps = 24
 -- 1. Disable IME to stop the "per-character" shift
@@ -42,8 +42,8 @@ config.keys = {
 		key = ".",
 		action = wezterm.action.ToggleFullScreen,
 	},
-    { key = '=', mods = 'CTRL', action = wezterm.action.IncreaseFontSize },
-    { key = '-', mods = 'CTRL', action = wezterm.action.DecreaseFontSize },
+	{ key = "=", mods = "CTRL", action = wezterm.action.IncreaseFontSize },
+	{ key = "-", mods = "CTRL", action = wezterm.action.DecreaseFontSize },
 	{
 		mods = "LEADER",
 		key = "c",
@@ -106,7 +106,7 @@ for i = 0, 9 do
 	table.insert(config.keys, {
 		key = tostring(i),
 		mods = "ALT",
-		action = wezterm.action.ActivateTab(i-1),
+		action = wezterm.action.ActivateTab(i - 1),
 	})
 end
 
@@ -124,30 +124,30 @@ config.use_fancy_tab_bar = false
 
 config.colors = {
 	tab_bar = {
-		background = '#21252b',
+		background = "#21252b",
 		active_tab = {
-			bg_color = '#282c34',
-			fg_color = '#abb2bf',
-			intensity = 'Normal',
-			underline = 'None',
+			bg_color = "#282c34",
+			fg_color = "#abb2bf",
+			intensity = "Normal",
+			underline = "None",
 			italic = false,
 			strikethrough = false,
 		},
 		inactive_tab = {
-			bg_color = '#21252b',
-			fg_color = '#5c6370',
+			bg_color = "#21252b",
+			fg_color = "#5c6370",
 		},
 		inactive_tab_hover = {
-			bg_color = '#3e4451',
-			fg_color = '#abb2bf',
+			bg_color = "#3e4451",
+			fg_color = "#abb2bf",
 		},
 		new_tab = {
-			bg_color = '#21252b',
-			fg_color = '#5c6370',
+			bg_color = "#21252b",
+			fg_color = "#5c6370",
 		},
 		new_tab_hover = {
-			bg_color = '#3e4451',
-			fg_color = '#abb2bf',
+			bg_color = "#3e4451",
+			fg_color = "#abb2bf",
 		},
 	},
 }
@@ -164,13 +164,13 @@ local function tab_title(tab_info)
 end
 
 local function is_vim(pane)
-	return pane:get_user_vars().IS_NVIM == '1'
+	return pane:get_user_vars().IS_NVIM == "1"
 end
 
 local function nav(dir, key)
 	return wezterm.action_callback(function(win, pane)
 		if is_vim(pane) then
-			win:perform_action({ SendKey = { key = key, mods = 'CTRL' } }, pane)
+			win:perform_action({ SendKey = { key = key, mods = "CTRL" } }, pane)
 		else
 			win:perform_action({ ActivatePaneDirection = dir }, pane)
 		end
@@ -180,7 +180,7 @@ end
 local function resize(dir, key)
 	return wezterm.action_callback(function(win, pane)
 		if is_vim(pane) then
-			win:perform_action({ SendKey = { key = key, mods = 'META' } }, pane)
+			win:perform_action({ SendKey = { key = key, mods = "META" } }, pane)
 		else
 			win:perform_action({ AdjustPaneSize = { dir, 3 } }, pane)
 		end
@@ -188,15 +188,15 @@ local function resize(dir, key)
 end
 
 -- CTRL+h/j/k/l: navigate panes (pass through to nvim)
-table.insert(config.keys, { key = 'h', mods = 'CTRL', action = nav('Left',  'h') })
-table.insert(config.keys, { key = 'j', mods = 'CTRL', action = nav('Down',  'j') })
-table.insert(config.keys, { key = 'k', mods = 'CTRL', action = nav('Up',    'k') })
-table.insert(config.keys, { key = 'l', mods = 'CTRL', action = nav('Right', 'l') })
+table.insert(config.keys, { key = "h", mods = "CTRL", action = nav("Left", "h") })
+table.insert(config.keys, { key = "j", mods = "CTRL", action = nav("Down", "j") })
+table.insert(config.keys, { key = "k", mods = "CTRL", action = nav("Up", "k") })
+table.insert(config.keys, { key = "l", mods = "CTRL", action = nav("Right", "l") })
 
 -- META+h/j/k/l: resize panes (pass through to nvim)
-table.insert(config.keys, { key = 'h', mods = 'META', action = resize('Left',  'h') })
-table.insert(config.keys, { key = 'j', mods = 'META', action = resize('Down',  'j') })
-table.insert(config.keys, { key = 'k', mods = 'META', action = resize('Up',    'k') })
-table.insert(config.keys, { key = 'l', mods = 'META', action = resize('Right', 'l') })
+table.insert(config.keys, { key = "h", mods = "META", action = resize("Left", "h") })
+table.insert(config.keys, { key = "j", mods = "META", action = resize("Down", "j") })
+table.insert(config.keys, { key = "k", mods = "META", action = resize("Up", "k") })
+table.insert(config.keys, { key = "l", mods = "META", action = resize("Right", "l") })
 
 return config
