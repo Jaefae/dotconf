@@ -20,7 +20,7 @@ for source in "${!SYMLINKS[@]}"; do
     target="${SYMLINKS[$source]}"
 
     if [ ! -e "$DOTFILES_DIR/$source" ]; then
-        echo "⚠ Skipping $source (not found)"
+        echo "Skipping $source (not found)"
         continue
     fi
 
@@ -37,4 +37,4 @@ for source in "${!SYMLINKS[@]}"; do
     ln -s "$DOTFILES_DIR/$source" "$target"
 done
 
-echo "✓ Done!"
+echo "Done!"

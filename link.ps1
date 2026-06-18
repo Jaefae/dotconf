@@ -19,7 +19,7 @@ foreach ($source in $SYMLINKS.Keys) {
     $sourcePath = Join-Path $DOTFILES_DIR $source
 
     if (-not (Test-Path $sourcePath)) {
-        Write-Host "⚠ Skipping $source (not found)" -ForegroundColor Yellow
+        Write-Host "Skipping $source (not found)" -ForegroundColor Yellow
         continue
     }
 
