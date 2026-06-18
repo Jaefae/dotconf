@@ -1,0 +1,32 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- link:
+    # --- Neovim ---
+    ~/.config/nvim:
+      path: nvim
+      if: '[ "$(uname)" = "Darwin" ]'
+      
+    ~/AppData/Local/nvim:
+      path: nvim
+      if: '[ "$OS" = "Windows_NT" ]'
+
+    # --- Wezterm ---
+    ~/.config/wezterm:
+      path: wezterm
+      if: '[ "$(uname)" = "Darwin" ]'
+      
+    ~/AppData/Local/wezterm:
+      path: wezterm
+      if: '[ "$OS" = "Windows_NT" ]'
+
+    # --- Nushell ---
+    ~/Library/Application Support/nushell:
+      path: nushell
+      if: '[ "$(uname)" = "Darwin" ]'
+      
+    ~/AppData/Local/nushell:
+      path: nushell
+      if: '[ "$OS" = "Windows_NT" ]'
