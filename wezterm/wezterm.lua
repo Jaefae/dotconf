@@ -1,11 +1,16 @@
 local wezterm = require("wezterm")
--- Hello from dotconf
 local config = wezterm.config_builder()
 local tab_style = "square"
+local is_windows = wezterm.target_triple:find("windows") ~= nil
 
 config.font_size = 13
 config.color_scheme = "Tokyo Night Storm"
-config.font = wezterm.font("0xProto Nerd Font")
+config.font = wezterm.font_with_fallback({
+	"0xProto Nerd Font Mono",
+	"0xProto Nerd Font",
+	"0xProto NF",
+	is_windows and "Cascadia Code" or "Menlo",
+})
 -- Disable IME to prevent Windows keystroke interception bugs
 config.line_height = 1.0
 
@@ -15,8 +20,9 @@ config.hide_tab_bar_if_only_one_tab = true
 config.tab_and_split_indices_are_zero_based = false
 config.window_decorations = "RESIZE"
 config.term = "xterm-256color"
-config.default_prog = { "nu" }
-config.front_end = "OpenGL"
+config.front_end = is_windows and "WebGpu" or "OpenGL"
+
+config.default_prog = { "xonsh" }
 
 config.animation_fps = 24
 -- 1. Disable IME to stop the "per-character" shift
@@ -52,7 +58,7 @@ config.keys = {
 	{
 		mods = "LEADER",
 		key = "x",
-		action = wezterm.action.CloseCurrentPane({ confirm = true }),
+		action = wezterm.action.CloseCurrentPane({ confirm = false }),
 	},
 	{
 		mods = "ALT",
@@ -97,7 +103,7 @@ config.keys = {
 	{
 		mods = "ALT",
 		key = "x",
-		action = wezterm.action.CloseCurrentPane({ confirm = true }),
+		action = wezterm.action.CloseCurrentPane({ confirm = false }),
 	},
 }
 

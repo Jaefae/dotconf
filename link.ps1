@@ -7,9 +7,9 @@ $HOME_DIR = $env:USERPROFILE
 # Define symlinks as: @{source = "target"}
 # source is relative to DOTFILES_DIR, target is relative to USERPROFILE
 $SYMLINKS = @{
-    "nvim"    = "$HOME_DIR\AppData\Local\nvim"
-    "wezterm" = "$HOME_DIR\AppData\Local\wezterm"
-    "nushell" = "$HOME_DIR\AppData\Local\nushell"
+    "nvim"     = "$HOME_DIR\AppData\Local\nvim"
+    "wezterm"  = "$HOME_DIR\.config\wezterm"
+    "xonfig"   = "$HOME_DIR\.config\xonsh"
 }
 
 Write-Host "Creating symlinks in $HOME_DIR..." -ForegroundColor Cyan
