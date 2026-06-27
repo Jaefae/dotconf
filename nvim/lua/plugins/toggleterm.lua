@@ -1,6 +1,10 @@
 return {
   'akinsho/toggleterm.nvim',
   version = "*",
+  -- Rarely used (wezterm splits handle most terminal needs), so keep it off
+  -- the startup path: load only when the toggle key or a command is used.
+  keys = { [[<C-\>]] },
+  cmd = { "ToggleTerm", "TermExec", "ToggleTermToggleAll", "TermSelect" },
   config = function()
     require("toggleterm").setup({
       size = 80,

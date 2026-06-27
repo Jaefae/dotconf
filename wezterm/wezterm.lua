@@ -4,7 +4,7 @@ local config = wezterm.config_builder()
 local tab_style = "square"
 
 config.font_size = 13
-config.color_scheme = "One Dark (Gogh)"
+config.color_scheme = "Tokyo Night Storm"
 config.font = wezterm.font("0xProto Nerd Font")
 -- Disable IME to prevent Windows keystroke interception bugs
 config.line_height = 1.0
@@ -123,31 +123,32 @@ config.tab_bar_at_bottom = false
 config.use_fancy_tab_bar = false
 
 config.colors = {
+	-- Tab bar tuned to the Tokyo Night Storm palette
 	tab_bar = {
-		background = "#21252b",
+		background = "#1f2335",
 		active_tab = {
-			bg_color = "#282c34",
-			fg_color = "#abb2bf",
+			bg_color = "#24283b",
+			fg_color = "#c0caf5",
 			intensity = "Normal",
 			underline = "None",
 			italic = false,
 			strikethrough = false,
 		},
 		inactive_tab = {
-			bg_color = "#21252b",
-			fg_color = "#5c6370",
+			bg_color = "#1f2335",
+			fg_color = "#545c7e",
 		},
 		inactive_tab_hover = {
-			bg_color = "#3e4451",
-			fg_color = "#abb2bf",
+			bg_color = "#292e42",
+			fg_color = "#a9b1d6",
 		},
 		new_tab = {
-			bg_color = "#21252b",
-			fg_color = "#5c6370",
+			bg_color = "#1f2335",
+			fg_color = "#545c7e",
 		},
 		new_tab_hover = {
-			bg_color = "#3e4451",
-			fg_color = "#abb2bf",
+			bg_color = "#292e42",
+			fg_color = "#a9b1d6",
 		},
 	},
 }

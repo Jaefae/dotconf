@@ -19,6 +19,16 @@ opt.timeoutlen = 300
 opt.scrolloff = 10
 opt.cursorline = true
 opt.termguicolors = true
+opt.signcolumn = "yes"
 
 vim.g.mapleader = " "
 opt.clipboard = "unnamedplus"
+
+-- C/C++ uses 2-space indent to match clang-format (.clang-format IndentWidth: 2)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "c", "cpp" },
+  callback = function()
+    vim.bo.tabstop = 2
+    vim.bo.shiftwidth = 2
+  end,
+})

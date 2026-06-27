@@ -1,6 +1,11 @@
 return {
   'saghen/blink.cmp',
   version = '*', -- Use a release tag to keep it stable
+  dependencies = { 'rafamadriz/friendly-snippets' }, -- snippet library for the 'snippets' source
+  -- Loaded eagerly-enough via nvim-lspconfig's dependency on it (so LSP
+  -- capabilities register before servers start); these events cover the
+  -- no-file-open case (typing in insert or the : cmdline).
+  event = { "InsertEnter", "CmdlineEnter" },
   opts = {
     keymap = { preset = 'super-tab' }, -- Familiar feel for most devs
     appearance = {
