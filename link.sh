@@ -10,7 +10,9 @@ HOME_DIR="$HOME"
 SYMLINKS=(
     "nvim:$HOME_DIR/.config/nvim"
     "wezterm:$HOME_DIR/.config/wezterm"
-    "xonfig:$HOME_DIR/.config/xonsh"
+    "starship/starship.toml:$HOME_DIR/.config/starship.toml"
+    "bash/bashrc:$HOME_DIR/.bashrc"
+    "bash/bashrc:$HOME_DIR/.zshrc"
 )
 
 echo "Creating symlinks in $HOME_DIR..."

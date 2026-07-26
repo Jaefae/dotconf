@@ -4,12 +4,16 @@
 $DOTFILES_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 $HOME_DIR = $env:USERPROFILE
 
+# Use pwsh's real $PROFILE path so we follow any OneDrive/Documents redirection.
+$PWSH_PROFILE = $PROFILE.CurrentUserCurrentHost
+
 # Define symlinks as: @{source = "target"}
 # source is relative to DOTFILES_DIR, target is relative to USERPROFILE
 $SYMLINKS = @{
-    "nvim"     = "$HOME_DIR\AppData\Local\nvim"
-    "wezterm"  = "$HOME_DIR\.config\wezterm"
-    "xonfig"   = "$HOME_DIR\AppData\Local\xonsh"
+    "nvim"                                  = "$HOME_DIR\AppData\Local\nvim"
+    "wezterm"                               = "$HOME_DIR\.config\wezterm"
+    "starship\starship.toml"                = "$HOME_DIR\.config\starship.toml"
+    "pwsh\Microsoft.PowerShell_profile.ps1" = $PWSH_PROFILE
 }
 
 Write-Host "Creating symlinks in $HOME_DIR..." -ForegroundColor Cyan

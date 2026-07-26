@@ -10,6 +10,9 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		opts = {
 			ensure_installed = { "clangd", "lua_ls" },
+			-- rustaceanvim owns rust-analyzer; stop mason-lspconfig from
+			-- auto-enabling a second instance for it.
+			automatic_enable = { exclude = { "rust_analyzer" } },
 		},
 	},
 	{
@@ -79,8 +82,12 @@ return {
 					)
 
 					-- Documentation & signature help
-					map("K", vim.lsp.buf.hover, "Hover documentation")
-					map("<C-k>", vim.lsp.buf.signature_help, "Signature help", "i")
+					map("K", function()
+						vim.lsp.buf.hover()
+					end, "Hover documentation")
+					map("<C-k>", function()
+						vim.lsp.buf.signature_help({ border = "rounded" })
+					end, "Signature help", "i")
 
 					-- Refactoring
 					map("<leader>rn", vim.lsp.buf.rename, "Rename")

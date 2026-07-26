@@ -1,0 +1,72 @@
+# bash / zsh rc — macOS/Linux system shell.
+# Replaces the old xonsh rc.xsh. ls/grep/etc. are already native here.
+
+# ~/.local/bin on PATH (was: $PATH.append(...) in rc.xsh)
+case ":$PATH:" in
+    *":$HOME/.local/bin:"*) ;;
+    *) export PATH="$HOME/.local/bin:$PATH" ;;
+esac
+
+# eza as a drop-in replacement for ls, when it's installed.
+if command -v eza >/dev/null 2>&1; then
+    # Everforest dark (medium) colours, matching starship.toml. eza reads these
+    # for its own columns (file types, permissions, size, owner, dates, git).
+    # 24-bit codes are 38;2;R;G;B; palette: green=167;192;128 yellow=219;188;127
+    # red=230;126;128 blue=127;187;179 cyan=131;192;146 magenta=214;153;182
+    # orange=230;152;117 grey=133;146;137 fg=211;198;170.
+    _eza_theme=(
+        'di=38;2;127;187;179'      # directory        -> blue
+        'ln=38;2;131;192;146'      # symlink          -> cyan
+        'ex=1;38;2;167;192;128'    # executable       -> bold green
+        'pi=38;2;230;152;117'      # fifo             -> orange
+        'so=38;2;214;153;182'      # socket           -> magenta
+        'bd=38;2;219;188;127'      # block device     -> yellow
+        'cd=38;2;219;188;127'      # char device      -> yellow
+        'or=1;38;2;230;126;128'    # orphaned symlink -> bold red
+        'ur=38;2;219;188;127'      # user  read       -> yellow
+        'uw=38;2;230;126;128'      # user  write      -> red
+        'ux=38;2;167;192;128'      # user  exec       -> green
+        'ue=38;2;167;192;128'      # user  exec (uid) -> green
+        'gr=38;2;219;188;127'      # group read       -> yellow
+        'gw=38;2;230;126;128'      # group write      -> red
+        'gx=38;2;167;192;128'      # group exec       -> green
+        'tr=38;2;219;188;127'      # other read       -> yellow
+        'tw=38;2;230;126;128'      # other write      -> red
+        'tx=38;2;167;192;128'      # other exec       -> green
+        'su=38;2;230;152;117'      # setuid           -> orange
+        'sf=38;2;230;152;117'      # setgid           -> orange
+        'xa=38;2;133;146;137'      # extended attr @  -> grey
+        'sn=38;2;131;192;146'      # size number      -> cyan
+        'sb=38;2;131;192;146'      # size unit        -> cyan
+        'uu=38;2;167;192;128'      # owner (you)      -> green
+        'un=38;2;133;146;137'      # owner (other)    -> grey
+        'gu=38;2;167;192;128'      # group (yours)    -> green
+        'gn=38;2;133;146;137'      # group (other)    -> grey
+        'lc=38;2;133;146;137'      # link count       -> grey
+        'da=38;2;133;146;137'      # date/time        -> grey
+        'xx=38;2;133;146;137'      # punctuation (-)  -> grey
+        'hd=1;38;2;211;198;170'    # header row       -> bold fg
+        'ga=38;2;167;192;128'      # git new          -> green
+        'gm=38;2;219;188;127'      # git modified     -> yellow
+        'gd=38;2;230;126;128'      # git deleted      -> red
+        'gv=38;2;214;153;182'      # git renamed      -> magenta
+        'gt=38;2;131;192;146'      # git type change  -> cyan
+        'gi=38;2;133;146;137'      # git ignored      -> grey
+        'gc=38;2;230;126;128'      # git conflicted   -> red
+    )
+    # Join the pairs with ':' in a subshell so the tweaked IFS stays local.
+    export EZA_COLORS="$(IFS=:; printf '%s' "${_eza_theme[*]}")"
+    unset _eza_theme
+
+    alias ls='eza --icons -a --group-directories-first'
+    alias ll='eza --icons -la --group-directories-first'
+fi
+
+# Prompt + Everforest theming, shared with every other shell via starship.toml
+if command -v starship >/dev/null 2>&1; then
+    if [ -n "$ZSH_VERSION" ]; then
+        eval "$(starship init zsh)"
+    else
+        eval "$(starship init bash)"
+    fi
+fi

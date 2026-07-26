@@ -1,0 +1,55 @@
+# Everforest (dark, medium) — ported from the old xonsh $PROMPT:
+#   {YELLOW}{env_name} {BOLD_GREEN}{cwd} {gitstatus}{RESET} {prompt_end}
+# Works identically in PowerShell, bash, zsh and fish.
+
+add_newline = false
+
+format = """
+$python\
+$directory\
+$git_branch\
+$git_status\
+$character"""
+
+palette = "everforest_dark"
+
+# Upstream Everforest dark palette (see palette.md in sainnhe/everforest).
+# `bg` is bg0 at medium contrast; `comment` is grey1.
+[palettes.everforest_dark]
+fg      = "#d3c6aa"
+bg      = "#2d353b"
+red     = "#e67e80"
+green   = "#a7c080"
+yellow  = "#dbbc7f"
+blue    = "#7fbbb3"
+cyan    = "#83c092"
+magenta = "#d699b6"
+orange  = "#e69875"
+comment = "#859289"
+
+# {BOLD_GREEN}{cwd}
+[directory]
+style = "bold green"
+truncation_length = 3
+truncate_to_repo = false
+
+# {gitstatus}
+[git_branch]
+style = "magenta"
+format = "[$symbol$branch]($style) "
+symbol = " "
+
+[git_status]
+style = "red"
+format = "([$all_status$ahead_behind]($style) )"
+
+# {YELLOW}{env_name}
+[python]
+style = "yellow"
+format = "[${symbol}${virtualenv}]($style) "
+symbol = " "
+
+# {prompt_end}
+[character]
+success_symbol = "[❯](cyan)"
+error_symbol = "[❯](red)"

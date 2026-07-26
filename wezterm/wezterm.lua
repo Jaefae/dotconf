@@ -4,25 +4,70 @@ local tab_style = "square"
 local is_windows = wezterm.target_triple:find("windows") ~= nil
 
 config.font_size = 13
-config.color_scheme = "Tokyo Night Storm"
+-- Everforest ships no terminal theme of its own, so this follows the community
+-- mapping: background and normal colors are the upstream dark/medium palette;
+-- the brights are Everforest's light-palette accents, which are more saturated
+-- and so read correctly as "bright".
+--
+-- Defined inline rather than by name: WezTerm only bundles the "Dark Medium"
+-- scheme on nightly, and naming a scheme the running build doesn't have falls
+-- back to a black default rather than erroring.
+config.color_schemes = {
+	["Everforest Dark Medium"] = {
+		ansi = { "#343f44", "#e67e80", "#a7c080", "#dbbc7f", "#7fbbb3", "#d699b6", "#83c092", "#d3c6aa" },
+		brights = { "#5c6a72", "#f85552", "#8da101", "#dfa000", "#3a94c5", "#df69ba", "#35a77c", "#dfddc8" },
+		foreground = "#d3c6aa",
+		background = "#2d353b",
+		cursor_fg = "#2d353b",
+		cursor_bg = "#d3c6aa",
+		cursor_border = "#d3c6aa",
+		selection_fg = "#d3c6aa",
+		selection_bg = "#543a48", -- bg_visual
+	},
+}
+config.color_scheme = "Everforest Dark Medium"
+
+-- Blurred/dimmed backdrop. The image is fully pre-processed with ImageMagick —
+-- including the bg0 (#2d353b) overlay baked in at 55% — so at runtime it's a
+-- single opaque layer with no per-frame alpha blending (that compositing was a
+-- measurable source of typing latency):
+--   magick output.png -resize 2560x1440^ -gravity center -extent 2560x1440 \
+--     -blur 0x20 -modulate 45 -fill "#2d353b" -colorize 55 \
+--     -strip -quality 85 backgrounds/outputblur.jpg
+-- To shift the balance: raise the -colorize value toward a flatter background,
+-- lower it to let more of the image through. config_dir resolves on both
+-- platforms because link.ps1/link.sh symlink the whole wezterm/ directory. Uses
+-- the layered `background` API; the older window_background_image is deprecated.
+config.background = {
+	{
+		source = { File = wezterm.config_dir .. "/backgrounds/outputblur.jpg" },
+		width = "100%",
+		height = "100%",
+	},
+}
 config.font = wezterm.font_with_fallback({
 	"0xProto Nerd Font Mono",
 	"0xProto Nerd Font",
 	"0xProto NF",
 	is_windows and "Cascadia Code" or "Menlo",
 })
--- Disable IME to prevent Windows keystroke interception bugs
-config.line_height = 1.0
 
-config.tab_bar_at_bottom = true
-config.use_fancy_tab_bar = false
-config.hide_tab_bar_if_only_one_tab = true
 config.tab_and_split_indices_are_zero_based = false
 config.window_decorations = "RESIZE"
 config.term = "xterm-256color"
 config.front_end = is_windows and "WebGpu" or "OpenGL"
 
-config.default_prog = { "xonsh" }
+-- Latency: cap presents high (bump to your monitor's refresh) and force the
+-- discrete GPU so WebGpu doesn't silently land on the integrated one.
+config.max_fps = 120
+config.webgpu_power_preference = "HighPerformance"
+-- Stop the blinking cursor from forcing a full-window repaint while idle.
+config.cursor_blink_rate = 0
+
+-- Windows: use PowerShell 7 (pwsh). macOS/Linux: inherit the login shell.
+if is_windows then
+	config.default_prog = { "pwsh", "-NoLogo" }
+end
 
 config.animation_fps = 24
 -- 1. Disable IME to stop the "per-character" shift
@@ -123,38 +168,40 @@ Tab Bar
 ]]
 --
 
--- tab bar
-config.hide_tab_bar_if_only_one_tab = true
-config.tab_bar_at_bottom = false
+-- Retro (non-fancy) tab bar, pinned to the top, hidden when only one tab is open.
 config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = false
+config.hide_tab_bar_if_only_one_tab = true
 
 config.colors = {
-	-- Tab bar tuned to the Tokyo Night Storm palette
+	-- Tab bar drawn from Everforest's dark/medium background scale. The active
+	-- tab sits at bg0 so it reads as continuous with the pane; the bar itself
+	-- recedes to bg_dim.
 	tab_bar = {
-		background = "#1f2335",
+		background = "#232a2e",
 		active_tab = {
-			bg_color = "#24283b",
-			fg_color = "#c0caf5",
+			bg_color = "#2d353b",
+			fg_color = "#d3c6aa",
 			intensity = "Normal",
 			underline = "None",
 			italic = false,
 			strikethrough = false,
 		},
 		inactive_tab = {
-			bg_color = "#1f2335",
-			fg_color = "#545c7e",
+			bg_color = "#232a2e",
+			fg_color = "#7a8478",
 		},
 		inactive_tab_hover = {
-			bg_color = "#292e42",
-			fg_color = "#a9b1d6",
+			bg_color = "#343f44",
+			fg_color = "#9da9a0",
 		},
 		new_tab = {
-			bg_color = "#1f2335",
-			fg_color = "#545c7e",
+			bg_color = "#232a2e",
+			fg_color = "#7a8478",
 		},
 		new_tab_hover = {
-			bg_color = "#292e42",
-			fg_color = "#a9b1d6",
+			bg_color = "#343f44",
+			fg_color = "#9da9a0",
 		},
 	},
 }

@@ -12,6 +12,8 @@ opt.smartindent = true
 opt.ignorecase = true
 opt.smartcase = true
 
+opt.hlsearch = true
+
 opt.undofile = true
 opt.updatetime = 250
 opt.timeoutlen = 300
@@ -23,6 +25,8 @@ opt.signcolumn = "yes"
 
 vim.g.mapleader = " "
 opt.clipboard = "unnamedplus"
+
+vim.keymap.set("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 
 -- C/C++ uses 2-space indent to match clang-format (.clang-format IndentWidth: 2)
 vim.api.nvim_create_autocmd("FileType", {
