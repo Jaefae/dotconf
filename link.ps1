@@ -9,7 +9,7 @@ $HOME_DIR = $env:USERPROFILE
 $SYMLINKS = @{
     "nvim"     = "$HOME_DIR\AppData\Local\nvim"
     "wezterm"  = "$HOME_DIR\.config\wezterm"
-    "xonfig"   = "$HOME_DIR\.config\xonsh"
+    "xonfig"   = "$HOME_DIR\AppData\Local\xonsh"
 }
 
 Write-Host "Creating symlinks in $HOME_DIR..." -ForegroundColor Cyan

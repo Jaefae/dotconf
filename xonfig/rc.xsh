@@ -1,7 +1,8 @@
+import os
 from pygments.token import Token, Comment, Keyword, Name, String, Number, Operator, Punctuation
 from xonsh.pyghooks import register_custom_pygments_style
 
-$PATH.append($HOME + '/.local/bin')
+$PATH.append(os.path.join(os.path.expanduser('~'), '.local', 'bin'))
 
 register_custom_pygments_style(
     'tokyo-night-storm',
