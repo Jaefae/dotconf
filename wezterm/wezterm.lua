@@ -36,7 +36,6 @@ config.color_scheme = "Kanagawa Wave"
 config.font = wezterm.font_with_fallback({
 	"JetBrainsMono Nerd Font Mono",
 	"JetBrainsMono Nerd Font",
-	is_windows and "Cascadia Code" or "Menlo",
 })
 
 config.tab_and_split_indices_are_zero_based = false
@@ -59,8 +58,8 @@ end
 config.animation_fps = 24
 -- 1. Disable IME to stop the "per-character" shift
 config.use_ime = false
--- 2. Force a strict line height (prevents rounding errors that move the buffer)
-config.line_height = 1.2
+-- 2. Force a strict line height (prevents rounding errors that cut off character glyphs)
+config.line_height = 1.0
 
 -- 3. Prevent the terminal from "snapping" to bottom on input
 config.scroll_to_bottom_on_input = false
@@ -91,7 +90,11 @@ wezterm.on("bump-font-size-decrease", function(window, pane)
 	window:set_config_overrides(overrides)
 end)
 
-config.leader = { key = " ", mods = "CTRL", timeout_milliseconds = 2000 }
+-- Leader is CTRL+b (tmux's default), not CTRL+Space. CTRL+Space was intercepted
+-- by WezTerm before nvim or PSReadLine ever saw it, and the 2s timeout meant a
+-- stray press swallowed the next keystroke for two full seconds. 1s is enough
+-- for a deliberate chord. CTRL+b is unbound in PSReadLine's Windows edit mode.
+config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
 	{
 		mods = "LEADER",

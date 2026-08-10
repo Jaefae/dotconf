@@ -10,6 +10,8 @@ return {
       { "<leader>g", group = "Git" },
       { "<leader>x", group = "Diagnostics" },
       { "<leader>t", group = "Toggle" },
+      { "<leader>e", desc = "Line diagnostics" },
+      { "<leader>h", desc = "Clear search highlight" },
     },
   },
 }

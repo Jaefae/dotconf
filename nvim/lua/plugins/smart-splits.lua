@@ -22,10 +22,16 @@ local function navigate(dir)
   end
 end
 
-vim.keymap.set('n', '<C-h>', function() navigate('h') end)
-vim.keymap.set('n', '<C-j>', function() navigate('j') end)
-vim.keymap.set('n', '<C-k>', function() navigate('k') end)
-vim.keymap.set('n', '<C-l>', function() navigate('l') end)
+-- Normal and terminal mode. WezTerm forwards CTRL+h/j/k/l to this pane whenever
+-- IS_NVIM is set, so without the terminal-mode maps the keys were simply swallowed
+-- inside :terminal and toggleterm buffers instead of moving between splits.
+for key, dir in pairs({ h = 'h', j = 'j', k = 'k', l = 'l' }) do
+  vim.keymap.set('n', '<C-' .. key .. '>', function() navigate(dir) end)
+  vim.keymap.set('t', '<C-' .. key .. '>', function()
+    vim.cmd('stopinsert')
+    navigate(dir)
+  end)
+end
 
 -- Resize splits
 vim.keymap.set('n', '<A-h>', '<C-w><')
