@@ -22,6 +22,7 @@ opt.scrolloff = 10
 opt.cursorline = true
 opt.termguicolors = true
 opt.signcolumn = "yes"
+opt.numberwidth = 3
 
 vim.g.mapleader = " "
 opt.clipboard = "unnamedplus"

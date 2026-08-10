@@ -4,51 +4,38 @@ local tab_style = "square"
 local is_windows = wezterm.target_triple:find("windows") ~= nil
 
 config.font_size = 13
--- Everforest ships no terminal theme of its own, so this follows the community
--- mapping: background and normal colors are the upstream dark/medium palette;
--- the brights are Everforest's light-palette accents, which are more saturated
--- and so read correctly as "bright".
---
--- Defined inline rather than by name: WezTerm only bundles the "Dark Medium"
--- scheme on nightly, and naming a scheme the running build doesn't have falls
--- back to a black default rather than erroring.
+-- Kanagawa's terminal palette, matching the "wave" variant used in nvim
+-- (rebelot/kanagawa.nvim). Defined inline rather than by name: WezTerm's
+-- bundled "Kanagawa (Gogh)" scheme doesn't track the nvim plugin's exact
+-- colors, and naming a scheme the running build doesn't have falls back to a
+-- black default rather than erroring.
 config.color_schemes = {
-	["Everforest Dark Medium"] = {
-		ansi = { "#343f44", "#e67e80", "#a7c080", "#dbbc7f", "#7fbbb3", "#d699b6", "#83c092", "#d3c6aa" },
-		brights = { "#5c6a72", "#f85552", "#8da101", "#dfa000", "#3a94c5", "#df69ba", "#35a77c", "#dfddc8" },
-		foreground = "#d3c6aa",
-		background = "#2d353b",
-		cursor_fg = "#2d353b",
-		cursor_bg = "#d3c6aa",
-		cursor_border = "#d3c6aa",
-		selection_fg = "#d3c6aa",
-		selection_bg = "#543a48", -- bg_visual
+	["Kanagawa Wave"] = {
+		ansi = { "#090618", "#c34043", "#76946a", "#c0a36e", "#7e9cd8", "#957fb8", "#6a9589", "#c8c093" },
+		brights = { "#727169", "#e82424", "#98bb6c", "#e6c384", "#7fb4ca", "#938aa9", "#7aa89f", "#dcd7ba" },
+		foreground = "#dcd7ba",
+		background = "#1f1f28",
+		cursor_fg = "#1f1f28",
+		cursor_bg = "#dcd7ba",
+		cursor_border = "#dcd7ba",
+		selection_fg = "#dcd7ba",
+		selection_bg = "#2d4f67", -- waveBlue2
 	},
 }
-config.color_scheme = "Everforest Dark Medium"
+config.color_scheme = "Kanagawa Wave"
 
--- Blurred/dimmed backdrop. The image is fully pre-processed with ImageMagick —
--- including the bg0 (#2d353b) overlay baked in at 55% — so at runtime it's a
--- single opaque layer with no per-frame alpha blending (that compositing was a
--- measurable source of typing latency):
---   magick output.png -resize 2560x1440^ -gravity center -extent 2560x1440 \
---     -blur 0x20 -modulate 45 -fill "#2d353b" -colorize 55 \
---     -strip -quality 85 backgrounds/outputblur.jpg
--- To shift the balance: raise the -colorize value toward a flatter background,
--- lower it to let more of the image through. config_dir resolves on both
--- platforms because link.ps1/link.sh symlink the whole wezterm/ directory. Uses
--- the layered `background` API; the older window_background_image is deprecated.
-config.background = {
-	{
-		source = { File = wezterm.config_dir .. "/backgrounds/outputblur.jpg" },
-		width = "100%",
-		height = "100%",
-	},
-}
+-- Flat solid background (sumiInk3, #1f1f28) instead of a photo backdrop. The
+-- previous blurred-photo backdrop (backgrounds/forest.png, pre-processed into
+-- wezterm/backgrounds/outputblur.jpg) had Everforest's bg0 baked directly
+-- into the image pixels at 55% opacity, so it can't be reused as-is under a
+-- different theme; regenerating it for Kanagawa needs ImageMagick
+-- (`brew install imagemagick`), which isn't installed here. Flat also avoids
+-- the per-frame image compositing that was a measurable source of typing
+-- latency, so config.background is left unset and WezTerm just paints
+-- `background` above.
 config.font = wezterm.font_with_fallback({
-	"0xProto Nerd Font Mono",
-	"0xProto Nerd Font",
-	"0xProto NF",
+	"JetBrainsMono Nerd Font Mono",
+	"JetBrainsMono Nerd Font",
 	is_windows and "Cascadia Code" or "Menlo",
 })
 
@@ -72,19 +59,37 @@ end
 config.animation_fps = 24
 -- 1. Disable IME to stop the "per-character" shift
 config.use_ime = false
-
 -- 2. Force a strict line height (prevents rounding errors that move the buffer)
-config.line_height = 1.0
+config.line_height = 1.2
 
 -- 3. Prevent the terminal from "snapping" to bottom on input
 config.scroll_to_bottom_on_input = false
 
 config.window_padding = {
-	left = 4,
-	right = 4,
-	top = 4,
-	bottom = 4,
+	left = 2,
+	right = 2,
+	top = 2,
+	bottom = 2,
 }
+
+-- Fixed-step font sizing (see keybinds below): WezTerm's built-in
+-- IncreaseFontSize/DecreaseFontSize scale by 10% of the current size, which
+-- overshoots at this base size. Step by a flat 1pt instead, tracked via a
+-- per-window override so each window can size independently.
+local FONT_SIZE_STEP = 1
+local FONT_SIZE_MIN = 6
+wezterm.on("bump-font-size-increase", function(window, pane)
+	local overrides = window:get_config_overrides() or {}
+	local current = overrides.font_size or config.font_size
+	overrides.font_size = current + FONT_SIZE_STEP
+	window:set_config_overrides(overrides)
+end)
+wezterm.on("bump-font-size-decrease", function(window, pane)
+	local overrides = window:get_config_overrides() or {}
+	local current = overrides.font_size or config.font_size
+	overrides.font_size = math.max(current - FONT_SIZE_STEP, FONT_SIZE_MIN)
+	window:set_config_overrides(overrides)
+end)
 
 config.leader = { key = " ", mods = "CTRL", timeout_milliseconds = 2000 }
 config.keys = {
@@ -93,8 +98,19 @@ config.keys = {
 		key = ".",
 		action = wezterm.action.ToggleFullScreen,
 	},
-	{ key = "=", mods = "CTRL", action = wezterm.action.IncreaseFontSize },
-	{ key = "-", mods = "CTRL", action = wezterm.action.DecreaseFontSize },
+	-- Step by a fixed 1pt instead of WezTerm's default IncreaseFontSize/
+	-- DecreaseFontSize, which jump in 10% multiplicative increments (too
+	-- coarse at this base size).
+	{
+		key = "=",
+		mods = "CTRL",
+		action = wezterm.action.EmitEvent("bump-font-size-increase"),
+	},
+	{
+		key = "-",
+		mods = "CTRL",
+		action = wezterm.action.EmitEvent("bump-font-size-decrease"),
+	},
 	{
 		mods = "LEADER",
 		key = "c",
@@ -174,34 +190,34 @@ config.tab_bar_at_bottom = false
 config.hide_tab_bar_if_only_one_tab = true
 
 config.colors = {
-	-- Tab bar drawn from Everforest's dark/medium background scale. The active
-	-- tab sits at bg0 so it reads as continuous with the pane; the bar itself
-	-- recedes to bg_dim.
+	-- Tab bar drawn from Kanagawa's ink scale. The active tab sits at the
+	-- editor background (sumiInk3) so it reads as continuous with the pane;
+	-- the bar itself recedes to the darkest ink (sumiInk0).
 	tab_bar = {
-		background = "#232a2e",
+		background = "#16161d",
 		active_tab = {
-			bg_color = "#2d353b",
-			fg_color = "#d3c6aa",
+			bg_color = "#1f1f28",
+			fg_color = "#dcd7ba",
 			intensity = "Normal",
 			underline = "None",
 			italic = false,
 			strikethrough = false,
 		},
 		inactive_tab = {
-			bg_color = "#232a2e",
-			fg_color = "#7a8478",
+			bg_color = "#16161d",
+			fg_color = "#727169",
 		},
 		inactive_tab_hover = {
-			bg_color = "#343f44",
-			fg_color = "#9da9a0",
+			bg_color = "#2a2a37",
+			fg_color = "#c8c093",
 		},
 		new_tab = {
-			bg_color = "#232a2e",
-			fg_color = "#7a8478",
+			bg_color = "#16161d",
+			fg_color = "#727169",
 		},
 		new_tab_hover = {
-			bg_color = "#343f44",
-			fg_color = "#9da9a0",
+			bg_color = "#2a2a37",
+			fg_color = "#c8c093",
 		},
 	},
 }

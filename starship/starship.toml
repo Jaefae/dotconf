@@ -1,4 +1,4 @@
-# Everforest (dark, medium) — ported from the old xonsh $PROMPT:
+# Kanagawa (dark, wave) — ported from the old xonsh $PROMPT:
 #   {YELLOW}{env_name} {BOLD_GREEN}{cwd} {gitstatus}{RESET} {prompt_end}
 # Works identically in PowerShell, bash, zsh and fish.
 
@@ -11,21 +11,21 @@ $git_branch\
 $git_status\
 $character"""
 
-palette = "everforest_dark"
+palette = "kanagawa_wave"
 
-# Upstream Everforest dark palette (see palette.md in sainnhe/everforest).
-# `bg` is bg0 at medium contrast; `comment` is grey1.
-[palettes.everforest_dark]
-fg      = "#d3c6aa"
-bg      = "#2d353b"
-red     = "#e67e80"
-green   = "#a7c080"
-yellow  = "#dbbc7f"
-blue    = "#7fbbb3"
-cyan    = "#83c092"
-magenta = "#d699b6"
-orange  = "#e69875"
-comment = "#859289"
+# Kanagawa "wave" palette (see rebelot/kanagawa.nvim colors.lua).
+# `bg` is sumiInk3; `comment` is fujiGray.
+[palettes.kanagawa_wave]
+fg      = "#dcd7ba"
+bg      = "#1f1f28"
+red     = "#c34043"
+green   = "#76946a"
+yellow  = "#c0a36e"
+blue    = "#7e9cd8"
+cyan    = "#6a9589"
+magenta = "#957fb8"
+orange  = "#ffa066"
+comment = "#727169"
 
 # {BOLD_GREEN}{cwd}
 [directory]
