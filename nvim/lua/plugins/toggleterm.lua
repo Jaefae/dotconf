@@ -11,8 +11,11 @@ return {
       open_mapping = [[<C-\>]], -- This is the magic key to show/hide it
       direction = 'vertical',  
       shade_terminals = false,
-      -- Use nushell if available, otherwise the OS default shell
-      shell = vim.fn.executable('nu') == 1 and 'nu' or vim.o.shell,
+      -- Match the shell the rest of this config sets up: pwsh on Windows,
+      -- the login shell elsewhere. Without this Windows falls back to
+      -- vim.o.shell, which is cmd.exe — no starship, none of the PATH fixes
+      -- from Microsoft.PowerShell_profile.ps1.
+      shell = vim.fn.has('win32') == 1 and 'pwsh' or vim.o.shell,
       winbar = {
         enabled = false,
         name_formatter = function(term) --  term: Terminal
