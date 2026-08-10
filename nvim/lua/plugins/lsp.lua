@@ -57,9 +57,8 @@ return {
 			-- Neovim 0.11 disables inline diagnostic text by default
 			vim.diagnostic.config({ virtual_text = true })
 
-			-- Global Diagnostic Mappings
-			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Prev diagnostic" })
-			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+			-- [d / ]d are built in as of 0.11 and are not deprecated; the old
+			-- vim.diagnostic.goto_prev/goto_next they were remapped to are.
 			vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -68,30 +67,24 @@ return {
 						vim.keymap.set(mode or "n", keys, fn, { buffer = args.buf, desc = desc })
 					end
 
-					-- Navigation (Telescope pickers, falling back to raw LSP if unavailable)
-					local ok, builtin = pcall(require, "telescope.builtin")
-					map("gd", ok and builtin.lsp_definitions or vim.lsp.buf.definition, "Go to definition")
-					map("gr", ok and builtin.lsp_references or vim.lsp.buf.references, "References")
-					map("gi", ok and builtin.lsp_implementations or vim.lsp.buf.implementation, "Implementation")
-					map("gy", ok and builtin.lsp_type_definitions or vim.lsp.buf.type_definition, "Type definition")
-					map("<leader>fs", ok and builtin.lsp_document_symbols or vim.lsp.buf.document_symbol, "Document symbols")
-					map(
-						"<leader>fS",
-						ok and builtin.lsp_dynamic_workspace_symbols or vim.lsp.buf.workspace_symbol,
-						"Workspace symbols"
-					)
+					-- Neovim 0.11+ already ships grn (rename), gra (code action),
+					-- grr (references), gri (implementation), grt (type definition)
+					-- and K (hover). Those are deliberately NOT redefined here:
+					-- binding plain `gr` made every one of them ambiguous, so each
+					-- grr/grn/gra press stalled for timeoutlen (300ms) waiting to
+					-- see whether it was really a bare `gr`.
+					--
+					-- What's left is what the defaults don't cover: a definition
+					-- jump, and symbol pickers.
+					map("gd", function() Snacks.picker.lsp_definitions() end, "Go to definition")
+					map("<leader>fs", function() Snacks.picker.lsp_symbols() end, "Document symbols")
+					map("<leader>fS", function() Snacks.picker.lsp_workspace_symbols() end, "Workspace symbols")
 
-					-- Documentation & signature help
-					map("K", function()
-						vim.lsp.buf.hover()
-					end, "Hover documentation")
+					-- Signature help. The 0.11 default for this is <C-s>, left
+					-- unused here because <C-s> is XOFF under terminal flow control.
 					map("<C-k>", function()
 						vim.lsp.buf.signature_help({ border = "rounded" })
 					end, "Signature help", "i")
-
-					-- Refactoring
-					map("<leader>rn", vim.lsp.buf.rename, "Rename")
-					map("<leader>ca", vim.lsp.buf.code_action, "Code action", { "n", "v" })
 
 					-- Inlay hints (param names, inferred types) with a toggle
 					local client = vim.lsp.get_client_by_id(args.data.client_id)
