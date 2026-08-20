@@ -1,4 +1,4 @@
-# Kanagawa (dark, dragon) — ported from the old xonsh $PROMPT:
+# Carbonfox — ported from the old xonsh $PROMPT:
 #   {YELLOW}{env_name} {BOLD_GREEN}{cwd} {gitstatus}{RESET} {prompt_end}
 # Works identically in PowerShell, bash, zsh and fish.
 
@@ -11,21 +11,21 @@ $git_branch\
 $git_status\
 $character"""
 
-palette = "kanagawa_dragon"
+palette = "carbonfox"
 
-# Kanagawa "dragon" palette (see rebelot/kanagawa.nvim colors.lua / themes.lua).
-# `bg` is dragonBlack3; `comment` is dragonAsh.
-[palettes.kanagawa_dragon]
-fg      = "#c5c9c5"
-bg      = "#181616"
-red     = "#c4746e"
-green   = "#8a9a7b"
-yellow  = "#c4b28a"
-blue    = "#8ba4b0"
-cyan    = "#8ea4a2"
-magenta = "#a292a3"
-orange  = "#b6927b"
-comment = "#737c73"
+# Carbonfox palette (see EdenEast/nightfox.nvim extra/carbonfox/*).
+# `bg` is bg1; `comment` is base04/grey.
+[palettes.carbonfox]
+fg      = "#f2f4f8"
+bg      = "#161616"
+red     = "#ee5396"
+green   = "#25be6a"
+yellow  = "#08bdba"
+blue    = "#78a9ff"
+cyan    = "#33b1ff"
+magenta = "#be95ff"
+orange  = "#3ddbd9"
+comment = "#7b7c7e"
 
 # {BOLD_GREEN}{cwd}
 [directory]

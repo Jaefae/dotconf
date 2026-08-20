@@ -1,14 +1,15 @@
 return {
-  "rebelot/kanagawa.nvim",
+  "EdenEast/nightfox.nvim",
   priority = 1000,
   config = function()
     vim.opt.background = "dark"
-    require("kanagawa").setup({
-      background = { dark = "dragon" },
-      -- Let the wezterm backdrop show through, matching the old Everforest setup.
-      transparent = true,
-      dimInactive = true,
+    require("nightfox").setup({
+      options = {
+        -- Let the wezterm backdrop show through, matching the old Everforest setup.
+        transparent = true,
+        dim_inactive = true,
+      },
     })
-    vim.cmd("colorscheme kanagawa-dragon")
+    vim.cmd("colorscheme carbonfox")
   end,
 }

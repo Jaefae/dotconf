@@ -38,50 +38,50 @@ if ((Test-Path $wingetLinks) -and ($env:PATH -notlike "*$wingetLinks*")) {
 # Get-ChildItem, and aliases can't carry arguments, so remove it and define
 # functions instead (@args forwards any extra flags/paths through to eza).
 if (Get-Command eza -ErrorAction SilentlyContinue) {
-    # Kanagawa "dragon" colours, matching starship.toml. eza reads these for its
+    # Carbonfox colours, matching starship.toml. eza reads these for its
     # own columns (file types, permissions, size, owner, dates, git).
-    # 24-bit codes are 38;2;R;G;B; palette: green=138;154;123 yellow=196;178;138
-    # red=196;116;110 blue=139;164;176 cyan=142;164;162 magenta=162;146;163
-    # orange=182;146;123 grey=115;124;115 fg=197;201;197.
+    # 24-bit codes are 38;2;R;G;B; palette: green=37;190;106 yellow=8;189;186
+    # red=238;83;150 blue=120;169;255 cyan=51;177;255 magenta=190;149;255
+    # orange=61;219;217 grey=123;124;126 fg=242;244;248.
     $env:EZA_COLORS = @(
-        'di=38;2;139;164;176'      # directory        -> blue
-        'ln=38;2;142;164;162'      # symlink          -> cyan
-        'ex=1;38;2;138;154;123'    # executable       -> bold green
-        'pi=38;2;182;146;123'      # fifo             -> orange
-        'so=38;2;162;146;163'      # socket           -> magenta
-        'bd=38;2;196;178;138'      # block device     -> yellow
-        'cd=38;2;196;178;138'      # char device      -> yellow
-        'or=1;38;2;196;116;110'    # orphaned symlink -> bold red
-        'ur=38;2;196;178;138'      # user  read       -> yellow
-        'uw=38;2;196;116;110'      # user  write      -> red
-        'ux=38;2;138;154;123'      # user  exec       -> green
-        'ue=38;2;138;154;123'      # user  exec (uid) -> green
-        'gr=38;2;196;178;138'      # group read       -> yellow
-        'gw=38;2;196;116;110'      # group write      -> red
-        'gx=38;2;138;154;123'      # group exec       -> green
-        'tr=38;2;196;178;138'      # other read       -> yellow
-        'tw=38;2;196;116;110'      # other write      -> red
-        'tx=38;2;138;154;123'      # other exec       -> green
-        'su=38;2;182;146;123'      # setuid           -> orange
-        'sf=38;2;182;146;123'      # setgid           -> orange
-        'xa=38;2;115;124;115'      # extended attr @  -> grey
-        'sn=38;2;142;164;162'      # size number      -> cyan
-        'sb=38;2;142;164;162'      # size unit        -> cyan
-        'uu=38;2;138;154;123'      # owner (you)      -> green
-        'un=38;2;115;124;115'      # owner (other)    -> grey
-        'gu=38;2;138;154;123'      # group (yours)    -> green
-        'gn=38;2;115;124;115'      # group (other)    -> grey
-        'lc=38;2;115;124;115'      # link count       -> grey
-        'da=38;2;115;124;115'      # date/time        -> grey
-        'xx=38;2;115;124;115'      # punctuation (-)  -> grey
-        'hd=1;38;2;197;201;197'    # header row       -> bold fg
-        'ga=38;2;138;154;123'      # git new          -> green
-        'gm=38;2;196;178;138'      # git modified     -> yellow
-        'gd=38;2;196;116;110'      # git deleted      -> red
-        'gv=38;2;162;146;163'      # git renamed      -> magenta
-        'gt=38;2;142;164;162'      # git type change  -> cyan
-        'gi=38;2;115;124;115'      # git ignored      -> grey
-        'gc=38;2;196;116;110'      # git conflicted   -> red
+        'di=38;2;120;169;255'      # directory        -> blue
+        'ln=38;2;51;177;255'       # symlink          -> cyan
+        'ex=1;38;2;37;190;106'     # executable       -> bold green
+        'pi=38;2;61;219;217'       # fifo             -> orange
+        'so=38;2;190;149;255'      # socket           -> magenta
+        'bd=38;2;8;189;186'        # block device     -> yellow
+        'cd=38;2;8;189;186'        # char device      -> yellow
+        'or=1;38;2;238;83;150'     # orphaned symlink -> bold red
+        'ur=38;2;8;189;186'        # user  read       -> yellow
+        'uw=38;2;238;83;150'       # user  write      -> red
+        'ux=38;2;37;190;106'       # user  exec       -> green
+        'ue=38;2;37;190;106'       # user  exec (uid) -> green
+        'gr=38;2;8;189;186'        # group read       -> yellow
+        'gw=38;2;238;83;150'       # group write      -> red
+        'gx=38;2;37;190;106'       # group exec       -> green
+        'tr=38;2;8;189;186'        # other read       -> yellow
+        'tw=38;2;238;83;150'       # other write      -> red
+        'tx=38;2;37;190;106'       # other exec       -> green
+        'su=38;2;61;219;217'       # setuid           -> orange
+        'sf=38;2;61;219;217'       # setgid           -> orange
+        'xa=38;2;123;124;126'      # extended attr @  -> grey
+        'sn=38;2;51;177;255'       # size number      -> cyan
+        'sb=38;2;51;177;255'       # size unit        -> cyan
+        'uu=38;2;37;190;106'       # owner (you)      -> green
+        'un=38;2;123;124;126'      # owner (other)    -> grey
+        'gu=38;2;37;190;106'       # group (yours)    -> green
+        'gn=38;2;123;124;126'      # group (other)    -> grey
+        'lc=38;2;123;124;126'      # link count       -> grey
+        'da=38;2;123;124;126'      # date/time        -> grey
+        'xx=38;2;123;124;126'      # punctuation (-)  -> grey
+        'hd=1;38;2;242;244;248'    # header row       -> bold fg
+        'ga=38;2;37;190;106'       # git new          -> green
+        'gm=38;2;8;189;186'        # git modified     -> yellow
+        'gd=38;2;238;83;150'       # git deleted      -> red
+        'gv=38;2;190;149;255'      # git renamed      -> magenta
+        'gt=38;2;51;177;255'       # git type change  -> cyan
+        'gi=38;2;123;124;126'      # git ignored      -> grey
+        'gc=38;2;238;83;150'       # git conflicted   -> red
     ) -join ':'
 
     Remove-Item Alias:ls -Force -ErrorAction SilentlyContinue
@@ -89,7 +89,7 @@ if (Get-Command eza -ErrorAction SilentlyContinue) {
     function ll { eza --icons -la --group-directories-first @args }
 }
 
-# Prompt + Kanagawa (dragon) theming, shared with every other shell via starship.toml
+# Prompt + Carbonfox theming, shared with every other shell via starship.toml
 if (Get-Command starship -ErrorAction SilentlyContinue) {
     Invoke-Expression (&starship init powershell)
 }
