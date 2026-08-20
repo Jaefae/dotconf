@@ -4,27 +4,27 @@ local tab_style = "square"
 local is_windows = wezterm.target_triple:find("windows") ~= nil
 
 config.font_size = 13
--- Kanagawa's terminal palette, matching the "wave" variant used in nvim
+-- Kanagawa's terminal palette, matching the "dragon" variant used in nvim
 -- (rebelot/kanagawa.nvim). Defined inline rather than by name: WezTerm's
 -- bundled "Kanagawa (Gogh)" scheme doesn't track the nvim plugin's exact
 -- colors, and naming a scheme the running build doesn't have falls back to a
 -- black default rather than erroring.
 config.color_schemes = {
-	["Kanagawa Wave"] = {
-		ansi = { "#090618", "#c34043", "#76946a", "#c0a36e", "#7e9cd8", "#957fb8", "#6a9589", "#c8c093" },
-		brights = { "#727169", "#e82424", "#98bb6c", "#e6c384", "#7fb4ca", "#938aa9", "#7aa89f", "#dcd7ba" },
-		foreground = "#dcd7ba",
-		background = "#1f1f28",
-		cursor_fg = "#1f1f28",
-		cursor_bg = "#dcd7ba",
-		cursor_border = "#dcd7ba",
-		selection_fg = "#dcd7ba",
-		selection_bg = "#2d4f67", -- waveBlue2
+	["Kanagawa Dragon"] = {
+		ansi = { "#0d0c0c", "#c4746e", "#8a9a7b", "#c4b28a", "#8ba4b0", "#a292a3", "#8ea4a2", "#c8c093" },
+		brights = { "#a6a69c", "#e46876", "#87a987", "#e6c384", "#7fb4ca", "#938aa9", "#7aa89f", "#c5c9c5" },
+		foreground = "#c5c9c5",
+		background = "#181616",
+		cursor_fg = "#181616",
+		cursor_bg = "#c5c9c5",
+		cursor_border = "#c5c9c5",
+		selection_fg = "#c5c9c5",
+		selection_bg = "#2d4f67", -- waveBlue2, shared across variants in kanagawa's theme table
 	},
 }
-config.color_scheme = "Kanagawa Wave"
+config.color_scheme = "Kanagawa Dragon"
 
--- Flat solid background (sumiInk3, #1f1f28) instead of a photo backdrop. The
+-- Flat solid background (dragonBlack3, #181616) instead of a photo backdrop. The
 -- previous blurred-photo backdrop (backgrounds/forest.png, pre-processed into
 -- wezterm/backgrounds/outputblur.jpg) had Everforest's bg0 baked directly
 -- into the image pixels at 55% opacity, so it can't be reused as-is under a
@@ -194,32 +194,32 @@ config.hide_tab_bar_if_only_one_tab = true
 
 config.colors = {
 	-- Tab bar drawn from Kanagawa's ink scale. The active tab sits at the
-	-- editor background (sumiInk3) so it reads as continuous with the pane;
-	-- the bar itself recedes to the darkest ink (sumiInk0).
+	-- editor background (dragonBlack3) so it reads as continuous with the pane;
+	-- the bar itself recedes to the darkest ink (dragonBlack0).
 	tab_bar = {
-		background = "#16161d",
+		background = "#0d0c0c",
 		active_tab = {
-			bg_color = "#1f1f28",
-			fg_color = "#dcd7ba",
+			bg_color = "#181616",
+			fg_color = "#c5c9c5",
 			intensity = "Normal",
 			underline = "None",
 			italic = false,
 			strikethrough = false,
 		},
 		inactive_tab = {
-			bg_color = "#16161d",
-			fg_color = "#727169",
+			bg_color = "#0d0c0c",
+			fg_color = "#737c73",
 		},
 		inactive_tab_hover = {
-			bg_color = "#2a2a37",
+			bg_color = "#282727",
 			fg_color = "#c8c093",
 		},
 		new_tab = {
-			bg_color = "#16161d",
-			fg_color = "#727169",
+			bg_color = "#0d0c0c",
+			fg_color = "#737c73",
 		},
 		new_tab_hover = {
-			bg_color = "#2a2a37",
+			bg_color = "#282727",
 			fg_color = "#c8c093",
 		},
 	},

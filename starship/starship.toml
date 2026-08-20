@@ -1,4 +1,4 @@
-# Kanagawa (dark, wave) — ported from the old xonsh $PROMPT:
+# Kanagawa (dark, dragon) — ported from the old xonsh $PROMPT:
 #   {YELLOW}{env_name} {BOLD_GREEN}{cwd} {gitstatus}{RESET} {prompt_end}
 # Works identically in PowerShell, bash, zsh and fish.
 
@@ -11,21 +11,21 @@ $git_branch\
 $git_status\
 $character"""
 
-palette = "kanagawa_wave"
+palette = "kanagawa_dragon"
 
-# Kanagawa "wave" palette (see rebelot/kanagawa.nvim colors.lua).
-# `bg` is sumiInk3; `comment` is fujiGray.
-[palettes.kanagawa_wave]
-fg      = "#dcd7ba"
-bg      = "#1f1f28"
-red     = "#c34043"
-green   = "#76946a"
-yellow  = "#c0a36e"
-blue    = "#7e9cd8"
-cyan    = "#6a9589"
-magenta = "#957fb8"
-orange  = "#ffa066"
-comment = "#727169"
+# Kanagawa "dragon" palette (see rebelot/kanagawa.nvim colors.lua / themes.lua).
+# `bg` is dragonBlack3; `comment` is dragonAsh.
+[palettes.kanagawa_dragon]
+fg      = "#c5c9c5"
+bg      = "#181616"
+red     = "#c4746e"
+green   = "#8a9a7b"
+yellow  = "#c4b28a"
+blue    = "#8ba4b0"
+cyan    = "#8ea4a2"
+magenta = "#a292a3"
+orange  = "#b6927b"
+comment = "#737c73"
 
 # {BOLD_GREEN}{cwd}
 [directory]
