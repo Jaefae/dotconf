@@ -33,8 +33,8 @@ config.color_scheme = "Carbonfox"
 -- latency, so config.background is left unset and WezTerm just paints
 -- `background` above.
 config.font = wezterm.font_with_fallback({
-	"JetBrainsMono Nerd Font Mono",
-	"JetBrainsMono Nerd Font",
+	"Hack Nerd Font Mono",
+	"Hack Nerd Font",
 })
 
 config.tab_and_split_indices_are_zero_based = false
