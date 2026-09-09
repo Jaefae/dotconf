@@ -4,37 +4,36 @@ local tab_style = "square"
 local is_windows = wezterm.target_triple:find("windows") ~= nil
 
 config.font_size = 13
--- Carbonfox's terminal palette (EdenEast/nightfox.nvim), matching the nvim
--- colorscheme. Values are the plugin's own extra/carbonfox/wezterm.toml
--- export, inlined rather than by name: naming a scheme the running build
--- doesn't have falls back to a black default rather than erroring.
+-- Gruvbox dark, matching the nvim colorscheme (ellisonleao/gruvbox.nvim).
+-- Inlined rather than by name: naming a scheme the running build doesn't
+-- have falls back to a black default rather than erroring.
 config.color_schemes = {
-	["Carbonfox"] = {
-		ansi = { "#282828", "#ee5396", "#25be6a", "#08bdba", "#78a9ff", "#be95ff", "#33b1ff", "#dfdfe0" },
-		brights = { "#484848", "#f16da6", "#46c880", "#2dc7c4", "#8cb6ff", "#c8a5ff", "#52bdff", "#e4e4e5" },
-		foreground = "#f2f4f8",
-		background = "#161616",
-		cursor_fg = "#161616",
-		cursor_bg = "#f2f4f8",
-		cursor_border = "#f2f4f8",
-		selection_fg = "#f2f4f8",
-		selection_bg = "#2a2a2a",
+	["Gruvbox Dark"] = {
+		ansi = { "#282828", "#cc241d", "#98971a", "#d79921", "#458588", "#b16286", "#689d6a", "#a89984" },
+		brights = { "#928374", "#fb4934", "#b8bb26", "#fabd2f", "#83a598", "#d3869b", "#8ec07c", "#ebdbb2" },
+		foreground = "#ebdbb2",
+		background = "#282828",
+		cursor_fg = "#282828",
+		cursor_bg = "#ebdbb2",
+		cursor_border = "#ebdbb2",
+		selection_fg = "#ebdbb2",
+		selection_bg = "#3c3836",
 	},
 }
-config.color_scheme = "Carbonfox"
+config.color_scheme = "Gruvbox Dark"
 
--- Flat solid background (carbonfox bg1, #161616) instead of a photo backdrop. The
+-- Flat solid background (gruvbox bg0, #282828) instead of a photo backdrop. The
 -- previous blurred-photo backdrop (backgrounds/forest.png, pre-processed into
 -- wezterm/backgrounds/outputblur.jpg) had Everforest's bg0 baked directly
 -- into the image pixels at 55% opacity, so it can't be reused as-is under a
--- different theme; regenerating it for Carbonfox needs ImageMagick
+-- different theme; regenerating it for Gruvbox needs ImageMagick
 -- (`brew install imagemagick`), which isn't installed here. Flat also avoids
 -- the per-frame image compositing that was a measurable source of typing
 -- latency, so config.background is left unset and WezTerm just paints
 -- `background` above.
 config.font = wezterm.font_with_fallback({
-	"JetBrainsMono Nerd Font Mono",
-	"JetBrainsMono Nerd Font",
+	"FiraCode Nerd Font Mono",
+	"FiraCode Nerd Font",
 })
 
 config.tab_and_split_indices_are_zero_based = false
@@ -192,34 +191,34 @@ config.tab_bar_at_bottom = false
 config.hide_tab_bar_if_only_one_tab = true
 
 config.colors = {
-	-- Tab bar drawn from Carbonfox's ink scale. The active tab sits at the
-	-- editor background (bg1) so it reads as continuous with the pane;
-	-- the bar itself recedes to the darkest ink (bg0).
+	-- Tab bar drawn from Gruvbox's dark scale. The active tab sits at the
+	-- editor background (bg0) so it reads as continuous with the pane;
+	-- the bar itself recedes to the darkest ink (bg0_hard).
 	tab_bar = {
-		background = "#0c0c0c",
+		background = "#1d2021",
 		active_tab = {
-			bg_color = "#161616",
-			fg_color = "#f2f4f8",
+			bg_color = "#282828",
+			fg_color = "#ebdbb2",
 			intensity = "Normal",
 			underline = "None",
 			italic = false,
 			strikethrough = false,
 		},
 		inactive_tab = {
-			bg_color = "#0c0c0c",
-			fg_color = "#7b7c7e",
+			bg_color = "#1d2021",
+			fg_color = "#928374",
 		},
 		inactive_tab_hover = {
-			bg_color = "#252525",
-			fg_color = "#08bdba",
+			bg_color = "#3c3836",
+			fg_color = "#8ec07c",
 		},
 		new_tab = {
-			bg_color = "#0c0c0c",
-			fg_color = "#7b7c7e",
+			bg_color = "#1d2021",
+			fg_color = "#928374",
 		},
 		new_tab_hover = {
-			bg_color = "#252525",
-			fg_color = "#08bdba",
+			bg_color = "#3c3836",
+			fg_color = "#8ec07c",
 		},
 	},
 }

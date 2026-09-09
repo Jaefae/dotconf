@@ -25,7 +25,7 @@ return {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main", -- tracks nvim-treesitter's main branch above
     dependencies = { "nvim-treesitter/nvim-treesitter" },
-    event = { "BufReadPost", "BufNewFile" },
+    event = "User FilePost",
     config = function()
       require("nvim-treesitter-textobjects").setup({
         select = { lookahead = true },
@@ -49,7 +49,7 @@ return {
     -- Keeps the enclosing function/class header pinned at the top of the window
     "nvim-treesitter/nvim-treesitter-context",
     main = "treesitter-context",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "User FilePost",
     keys = {
       { "<leader>tc", function() require("treesitter-context").toggle() end, desc = "Toggle context" },
     },

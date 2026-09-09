@@ -7,7 +7,7 @@ return {
 	{
 		"williamboman/mason-lspconfig.nvim",
 		dependencies = { "williamboman/mason.nvim" },
-		event = { "BufReadPre", "BufNewFile" },
+		event = "User FilePre",
 		opts = {
 			ensure_installed = { "clangd", "lua_ls" },
 			-- rustaceanvim owns rust-analyzer; stop mason-lspconfig from
@@ -19,7 +19,7 @@ return {
 		-- Installs non-LSP tools (formatters, debuggers) through Mason
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		dependencies = { "williamboman/mason.nvim" },
-		event = { "BufReadPre", "BufNewFile" },
+		event = "User FilePre",
 		opts = {
 			ensure_installed = { "stylua" },
 		},
@@ -29,7 +29,7 @@ return {
 		-- blink.cmp is a dependency so it loads first and registers its
 		-- completion capabilities before any server is enabled below.
 		dependencies = { "saghen/blink.cmp" },
-		event = { "BufReadPre", "BufNewFile" },
+		event = "User FilePre",
 		config = function()
 			-- The new Neovim 0.11+ way
 			-- Instead of require('lspconfig').clangd.setup({})

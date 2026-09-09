@@ -37,3 +37,21 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.shiftwidth = 2
   end,
 })
+
+-- Re-fire BufReadPre/BufReadPost as User events that skip directory buffers,
+-- so opening a dir with oil doesn't eagerly load LSP/git/treesitter plugins
+-- that lazy-load on those events (oil still triggers the raw Buf* events).
+vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
+  pattern = "*",
+  callback = function(args)
+    if vim.fn.isdirectory(args.file) == 1 then return end
+    vim.api.nvim_exec_autocmds("User", { pattern = "FilePre" })
+  end,
+})
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+  pattern = "*",
+  callback = function(args)
+    if vim.bo[args.buf].filetype == "oil" then return end
+    vim.api.nvim_exec_autocmds("User", { pattern = "FilePost" })
+  end,
+})

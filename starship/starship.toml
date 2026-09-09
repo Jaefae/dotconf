@@ -1,4 +1,4 @@
-# Carbonfox — ported from the old xonsh $PROMPT:
+# Gruvbox — ported from the old xonsh $PROMPT:
 #   {YELLOW}{env_name} {BOLD_GREEN}{cwd} {gitstatus}{RESET} {prompt_end}
 # Works identically in PowerShell, bash, zsh and fish.
 
@@ -11,21 +11,21 @@ $git_branch\
 $git_status\
 $character"""
 
-palette = "carbonfox"
+palette = "gruvbox"
 
-# Carbonfox palette (see EdenEast/nightfox.nvim extra/carbonfox/*).
-# `bg` is bg1; `comment` is base04/grey.
-[palettes.carbonfox]
-fg      = "#f2f4f8"
-bg      = "#161616"
-red     = "#ee5396"
-green   = "#25be6a"
-yellow  = "#08bdba"
-blue    = "#78a9ff"
-cyan    = "#33b1ff"
-magenta = "#be95ff"
-orange  = "#3ddbd9"
-comment = "#7b7c7e"
+# Gruvbox dark palette (bright variants, for contrast against bg0).
+# `bg` is bg0; `comment` is gray.
+[palettes.gruvbox]
+fg      = "#ebdbb2"
+bg      = "#282828"
+red     = "#fb4934"
+green   = "#b8bb26"
+yellow  = "#fabd2f"
+blue    = "#83a598"
+cyan    = "#8ec07c"
+magenta = "#d3869b"
+orange  = "#fe8019"
+comment = "#928374"
 
 # {BOLD_GREEN}{cwd}
 [directory]
