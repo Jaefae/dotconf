@@ -90,12 +90,17 @@ if (Get-Command eza -ErrorAction SilentlyContinue) {
     function ll { eza --icons -la --group-directories-first @args }
 }
 
-# zoxide replaces cd with a frecency-based jumper (z/zi).
-if (Get-Command zoxide -ErrorAction SilentlyContinue) {
-    Invoke-Expression (& { (zoxide init powershell | Out-String) })
-}
-
 # Prompt + Dracula theming, shared with every other shell via starship.toml
 if (Get-Command starship -ErrorAction SilentlyContinue) {
     Invoke-Expression (&starship init powershell)
+}
+
+# zoxide replaces cd with a frecency-based jumper (z/zi). Must init AFTER
+# starship: zoxide wraps whatever `prompt` function currently exists to run
+# its directory-tracking hook, but starship's init *overwrites* `prompt`
+# outright rather than chaining it. If zoxide ran first, starship's init
+# would silently destroy zoxide's wrapper and it would stop recording any
+# directory you cd into.
+if (Get-Command zoxide -ErrorAction SilentlyContinue) {
+    Invoke-Expression (& { (zoxide init powershell | Out-String) })
 }
