@@ -4,29 +4,29 @@ local tab_style = "square"
 local is_windows = wezterm.target_triple:find("windows") ~= nil
 
 config.font_size = 13
--- Gruvbox dark, matching the nvim colorscheme (ellisonleao/gruvbox.nvim).
--- Inlined rather than by name: naming a scheme the running build doesn't
--- have falls back to a black default rather than erroring.
+-- Dracula, matching the nvim colorscheme (Mofiqul/dracula.nvim). Inlined
+-- rather than by name: naming a scheme the running build doesn't have falls
+-- back to a black default rather than erroring.
 config.color_schemes = {
-	["Gruvbox Dark"] = {
-		ansi = { "#282828", "#cc241d", "#98971a", "#d79921", "#458588", "#b16286", "#689d6a", "#a89984" },
-		brights = { "#928374", "#fb4934", "#b8bb26", "#fabd2f", "#83a598", "#d3869b", "#8ec07c", "#ebdbb2" },
-		foreground = "#ebdbb2",
-		background = "#282828",
-		cursor_fg = "#282828",
-		cursor_bg = "#ebdbb2",
-		cursor_border = "#ebdbb2",
-		selection_fg = "#ebdbb2",
-		selection_bg = "#3c3836",
+	["Dracula"] = {
+		ansi = { "#21222c", "#ff5555", "#50fa7b", "#f1fa8c", "#bd93f9", "#ff79c6", "#8be9fd", "#f8f8f2" },
+		brights = { "#6272a4", "#ff6e6e", "#69ff94", "#ffffa5", "#d6acff", "#ff92df", "#a4ffff", "#ffffff" },
+		foreground = "#f8f8f2",
+		background = "#282a36",
+		cursor_fg = "#282a36",
+		cursor_bg = "#f8f8f2",
+		cursor_border = "#f8f8f2",
+		selection_fg = "#f8f8f2",
+		selection_bg = "#44475a",
 	},
 }
-config.color_scheme = "Gruvbox Dark"
+config.color_scheme = "Dracula"
 
--- Flat solid background (gruvbox bg0, #282828) instead of a photo backdrop. The
+-- Flat solid background (Dracula bg, #282a36) instead of a photo backdrop. The
 -- previous blurred-photo backdrop (backgrounds/forest.png, pre-processed into
 -- wezterm/backgrounds/outputblur.jpg) had Everforest's bg0 baked directly
 -- into the image pixels at 55% opacity, so it can't be reused as-is under a
--- different theme; regenerating it for Gruvbox needs ImageMagick
+-- different theme; regenerating it for Dracula needs ImageMagick
 -- (`brew install imagemagick`), which isn't installed here. Flat also avoids
 -- the per-frame image compositing that was a measurable source of typing
 -- latency, so config.background is left unset and WezTerm just paints
@@ -191,34 +191,34 @@ config.tab_bar_at_bottom = false
 config.hide_tab_bar_if_only_one_tab = true
 
 config.colors = {
-	-- Tab bar drawn from Gruvbox's dark scale. The active tab sits at the
-	-- editor background (bg0) so it reads as continuous with the pane;
-	-- the bar itself recedes to the darkest ink (bg0_hard).
+	-- Tab bar drawn from Dracula's dark scale. The active tab sits at the
+	-- editor background so it reads as continuous with the pane; the bar
+	-- itself recedes to Dracula's darker "background 2" tone.
 	tab_bar = {
-		background = "#1d2021",
+		background = "#191a21",
 		active_tab = {
-			bg_color = "#282828",
-			fg_color = "#ebdbb2",
+			bg_color = "#282a36",
+			fg_color = "#f8f8f2",
 			intensity = "Normal",
 			underline = "None",
 			italic = false,
 			strikethrough = false,
 		},
 		inactive_tab = {
-			bg_color = "#1d2021",
-			fg_color = "#928374",
+			bg_color = "#191a21",
+			fg_color = "#6272a4",
 		},
 		inactive_tab_hover = {
-			bg_color = "#3c3836",
-			fg_color = "#8ec07c",
+			bg_color = "#44475a",
+			fg_color = "#8be9fd",
 		},
 		new_tab = {
-			bg_color = "#1d2021",
-			fg_color = "#928374",
+			bg_color = "#191a21",
+			fg_color = "#6272a4",
 		},
 		new_tab_hover = {
-			bg_color = "#3c3836",
-			fg_color = "#8ec07c",
+			bg_color = "#44475a",
+			fg_color = "#8be9fd",
 		},
 	},
 }
@@ -251,7 +251,9 @@ end
 local function resize(dir, key)
 	return wezterm.action_callback(function(win, pane)
 		if is_vim(pane) then
-			win:perform_action({ SendKey = { key = key, mods = "META" } }, pane)
+			-- Vim treats <A-x> and <M-x> as the same modifier, so forwarding
+			-- ALT here still lands on nvim's smart-splits.lua `<A-h>` maps.
+			win:perform_action({ SendKey = { key = key, mods = "ALT" } }, pane)
 		else
 			win:perform_action({ AdjustPaneSize = { dir, 3 } }, pane)
 		end
@@ -264,10 +266,14 @@ table.insert(config.keys, { key = "j", mods = "CTRL", action = nav("Down", "j") 
 table.insert(config.keys, { key = "k", mods = "CTRL", action = nav("Up", "k") })
 table.insert(config.keys, { key = "l", mods = "CTRL", action = nav("Right", "l") })
 
--- META+h/j/k/l: resize panes (pass through to nvim)
-table.insert(config.keys, { key = "h", mods = "META", action = resize("Left", "h") })
-table.insert(config.keys, { key = "j", mods = "META", action = resize("Down", "j") })
-table.insert(config.keys, { key = "k", mods = "META", action = resize("Up", "k") })
-table.insert(config.keys, { key = "l", mods = "META", action = resize("Right", "l") })
+-- CTRL+SHIFT+h/j/k/l: resize panes (pass through to nvim). Was META (the
+-- physical Super/Cmd key), but that's not reliably cross-platform: Win+L
+-- locks the screen on Windows before WezTerm ever sees the keypress, and
+-- Cmd+H is reserved by macOS to hide the app. CTRL+SHIFT isn't claimed by
+-- either OS.
+table.insert(config.keys, { key = "h", mods = "CTRL|SHIFT", action = resize("Left", "h") })
+table.insert(config.keys, { key = "j", mods = "CTRL|SHIFT", action = resize("Down", "j") })
+table.insert(config.keys, { key = "k", mods = "CTRL|SHIFT", action = resize("Up", "k") })
+table.insert(config.keys, { key = "l", mods = "CTRL|SHIFT", action = resize("Right", "l") })
 
 return config
